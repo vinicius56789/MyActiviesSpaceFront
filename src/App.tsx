@@ -1,13 +1,13 @@
-import {Hello} from './components/Hello'
-import {Counter} from './components/Counter'
+import GlobalStyle  from './styles/global';
+import {BrowserRouter as Router} from 'react-router-dom'
+import Routes from './routes'
 
 function App() {
   return (
-    <div className="App">
-        <h1>Frontend MONSTRO</h1>
-        <Hello name="Vinícius"/>
-        <Counter/>
-    </div>
+    <Router>
+        <Routes/>
+        <GlobalStyle/>
+    </Router>
   );
 }
 
