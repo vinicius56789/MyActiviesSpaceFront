@@ -1,7 +1,31 @@
-import { Container } from "./styles";
+import { useEffect, useState } from 'react';
+import {format, parseISO} from 'date-fns'
+import { Container } from './styles';
+import api from '../../services/api';
 
-export function ActivyTable(){
-    return(
+interface CourseUnit {
+    name: string;
+}
+
+interface Activy {
+    id: string;
+    name: string;
+    grade: number;
+    activy_date: string;
+    course_unit: CourseUnit
+}
+
+export function ActivyTable() {
+
+    const [activies, setActivies] = useState<Activy[]>([])
+
+    useEffect(() => {
+
+        api.get('/activy')
+            .then(response => setActivies(response.data))
+    },[])
+
+    return (
         <Container>
             <table>
                 <thead>
@@ -13,24 +37,18 @@ export function ActivyTable(){
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Programação WEB</td>
-                        <td>Implementação de autenticação</td>
-                        <td>8</td>
-                        <td>23/05/2021</td>
-                    </tr>
-                    <tr>
-                        <td>O Naruto pode ser um pouco duro as vezes</td>
-                        <td>Talvez você não saiba disso</td>
-                        <td>Mas o Naruto também cresceu sem pai</td>
-                        <td>Na verdade, ele nunca conheceu nenhum dos pais</td>
-                    </tr>
-                    <tr>
-                        <td>O Naruto pode ser um pouco duro as vezes</td>
-                        <td>Talvez você não saiba disso</td>
-                        <td>Mas o Naruto também cresceu sem pai</td>
-                        <td>Na verdade, ele nunca conheceu nenhum dos pais</td>
-                    </tr>
+                    {
+                        activies.map(activy => {
+                            return (
+                                <tr key={activy.id}>
+                                    <td>{activy.course_unit.name}</td>
+                                    <td>{activy.name}</td>
+                                    <td>{activy.grade}</td>
+                                    <td>{format(parseISO(activy.activy_date), 'dd/MM/yyyy')}</td>
+                                </tr>
+                            )
+                        })
+                    }
                 </tbody>
             </table>
         </Container>
